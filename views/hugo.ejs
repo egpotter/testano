@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+  <head>
+    <title>Hugos klein Topf 1.0</title>
+    <link rel="stylesheet" href="/static/stylesheets/style.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhai|Candal|Chewy&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+    integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  </head>
+  <body>
+  <div id="container">
+    <div class="todo-container">
+      <h2>Hugos klein Topf 1.0</h2>
+      <div class="todo">
+        <form action="/" method="POST" class="todo-header">
+          <textarea id="nomes" name="nomes" rows="20" cols="60" placeholder="nomes separados por ','"></textarea>
+          <input type=number id="players" name="players" min="5" max="12" value="5"></input>
+          <button type="submit">Sortear times</button>
+        </form>
+        <ul class="times">
+          <div class="todo-list-item-name">Times</div>
+          <% if (typeof times != "undefined") { %>
+            <% for (i = 0; i < times.length; i++) { %>
+              <li class="todo-list-item">
+                <div class="todo-list-item-name">Time <%= i+1 %>: <%= times[i].join(', ')  %></div>
+              </li>
+            <% } %>
+          <% } %>
+          <% if (typeof resto != "undefined" && resto.length > 0) { %>
+            <li class="todo-list-item">
+              <div class="todo-list-item-name">Resto <%= resto.join(', ')  %></div>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>

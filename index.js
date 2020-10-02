@@ -1,25 +1,46 @@
-// using the http module
-let http = require('http'),
- 
-// look for PORT environment variable, 
+port = process.env.PORT || process.argv[2] || 8083;
+
+const express = require("express");
+const app = express();
+
+app.use('/static', express.static(__dirname + "/public/"));
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+
+app.get('/',(req, res) => {
+  res.render('hugo.ejs', { nomes: [] });
+});
+
+app.post('/',(req, res) => {
+  array = req.body["nomes"].split(",")
+  n = req.body["players"]
+  result = []
+  while (array.length >= n) {
+    random = getRandom(array, n)
+    result.push(random)
+    array = array.filter(function(item) {
+      return !random.includes(item);
+    })
+  }
+  res.render('hugo.ejs', { resto: array, times: result, nomes: req.body["nomes"] });
+});
+
+// look for PORT environment variable,
 // else look for CLI argument,
 // else use hard coded value for port 8080
-port = process.env.PORT || process.argv[2] || 8080;
- 
-// create a simple server
-let server = http.createServer(function (req, res) {
- 
-        res.writeHead(200, {
-            'Content-Type': 'text/plain'
-        });
-        res.write('hello heroku!', 'utf-8');
-        res.end();
- 
-    });
- 
-// listen on the port
-server.listen(port, function () {
- 
-    console.log('app up on port: ' + port);
- 
-});
+app.listen(port, () => console.log("Server Up and running"));
+
+
+function getRandom(arr, n) {
+  var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+  if (n > len)
+      throw new RangeError("getRandom: more elements taken than available");
+  while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+}
